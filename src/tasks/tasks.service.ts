@@ -17,6 +17,16 @@ export class TasksService {
         return this.tasks.find(task => task.id === id);
     }
 
+    deleteTaskById(id: string) {
+        const deletedTask = this.tasks.find(task => task.id === id);
+        if (deletedTask === undefined) {
+            return 'The task does not exist';
+        }
+
+        this.tasks = this.tasks.filter(task => task.id !== id);
+        return deletedTask;
+    }
+
     createTask(createTaskDto: CreateTaskDto): Task {
         const { title, description } = createTaskDto;
 
