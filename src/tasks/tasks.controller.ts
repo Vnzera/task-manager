@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Patch } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 
 // The controller is responsible for handling requests to our routes. It also uses methods in our task service
@@ -13,6 +13,7 @@ export class TasksController {
     getAllTasks(): Task[] {
         return this.tasksService.getAllTasks();
     }
+
     // /:id is a url parameter that the front end must provide in the request
     // @Param tells NestJS to look for the 'id' parameter in the request
     @Get('/:id')
@@ -24,6 +25,16 @@ export class TasksController {
     deleteTaskById(@Param('id') id: string) {
         return this.tasksService.deleteTaskById(id);
     }
+
+    @Patch('/:id/status')
+    updateTaskStatus(
+        @Param('id') id: string,
+        @Body('status') status: TaskStatus,
+    ): Task {
+        return this.tasksService.updateTaskStatus(id, status);
+    }
+
+
     // @Body and createTaskDto work together here
     // NestJS searches the @Body of the request for Dto data ie 'title' 'description'
     @Post()
