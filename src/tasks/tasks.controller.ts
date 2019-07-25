@@ -1,17 +1,24 @@
-import { Controller, Get, Post, Delete, Body, Param, Patch } from '@nestjs/common';
+import { Controller, Query, Get, Post, Delete, Body, Param, Patch } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 // The controller is responsible for handling requests to our routes. It also uses methods in our task service
 
 @Controller('tasks')
 export class TasksController {
     constructor(private tasksService: TasksService) { }
-
+    // extract filterDto properties from Query parameters
+    // if either search or status was provided then we call getTasksWithFilters
+    // if none are provided then we simply retrieve all tasks
     @Get()
-    getAllTasks(): Task[] {
-        return this.tasksService.getAllTasks();
+    getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+        if (Object.keys(filterDto).length) {
+            return this.tasksService.getTasksWithFilters(filterDto);
+        } else {
+            return this.tasksService.getAllTasks();
+        }
     }
 
     // /:id is a url parameter that the front end must provide in the request
