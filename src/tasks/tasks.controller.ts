@@ -1,4 +1,4 @@
-import { Controller, Query, Get, Post, Delete, Body, Param, Patch } from '@nestjs/common';
+import { Controller, Query, Get, Post, Delete, Body, Param, Patch, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -30,7 +30,7 @@ export class TasksController {
 
     @Delete('/:id')
     deleteTaskById(@Param('id') id: string) {
-        return this.tasksService.deleteTaskById(id);
+        return this.tasksService.deleteTask(id);
     }
 
     @Patch('/:id/status')
@@ -45,6 +45,7 @@ export class TasksController {
     // @Body and createTaskDto work together here
     // NestJS searches the @Body of the request for Dto data ie 'title' 'description'
     @Post()
+    @UsePipes(ValidationPipe)
     createTask(@Body() createTaskDto: CreateTaskDto): Task {
         return this.tasksService.createTask(createTaskDto);
     }
