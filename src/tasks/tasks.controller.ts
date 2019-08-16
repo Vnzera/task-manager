@@ -3,6 +3,7 @@ import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 
 // The controller is responsible for handling requests to our routes. It also uses methods in our task service
 
@@ -28,6 +29,14 @@ export class TasksController {
         return this.tasksService.getTaskById(id);
     }
 
+    // @Body and createTaskDto work together here
+    // NestJS searches the @Body of the request for Dto data ie 'title' 'description'
+    @Post()
+    @UsePipes(ValidationPipe)
+    createTask(@Body() createTaskDto: CreateTaskDto): Task {
+        return this.tasksService.createTask(createTaskDto);
+    }
+
     @Delete('/:id')
     deleteTaskById(@Param('id') id: string) {
         return this.tasksService.deleteTask(id);
@@ -36,17 +45,8 @@ export class TasksController {
     @Patch('/:id/status')
     updateTaskStatus(
         @Param('id') id: string,
-        @Body('status') status: TaskStatus,
+        @Body('status', TaskStatusValidationPipe) status: TaskStatus,
     ): Task {
         return this.tasksService.updateTaskStatus(id, status);
-    }
-
-
-    // @Body and createTaskDto work together here
-    // NestJS searches the @Body of the request for Dto data ie 'title' 'description'
-    @Post()
-    @UsePipes(ValidationPipe)
-    createTask(@Body() createTaskDto: CreateTaskDto): Task {
-        return this.tasksService.createTask(createTaskDto);
     }
 }
