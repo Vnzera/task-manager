@@ -14,7 +14,7 @@ export class TasksController {
     // if either search or status was provided then we call getTasksWithFilters
     // if none are provided then we simply retrieve all tasks
     @Get()
-    getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+    getTasks(@Query(ValidationPipe) filterDto: GetTasksFilterDto): Task[] {
         if (Object.keys(filterDto).length) {
             return this.tasksService.getTasksWithFilters(filterDto);
         } else {
