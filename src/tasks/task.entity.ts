@@ -1,5 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
-import { TaskStatus } from './task.model';
+import { TaskStatus } from './task-status.enum';
+
+// this entity describes the structure of our Tasks as it pertains to postgres
+// similar to how Task model defines the structure pertaining to req/res data
 
 @Entity()
 export class Task extends BaseEntity {
@@ -9,7 +12,7 @@ export class Task extends BaseEntity {
     @Column()
     title: string;
 
-    @Column
+    @Column()
     description: string;
 
     @Column()
