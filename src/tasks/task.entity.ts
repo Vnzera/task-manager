@@ -6,6 +6,7 @@ import { TaskStatus } from './task-status.enum';
 
 @Entity()
 export class Task extends BaseEntity {
+    // this decorator causes an id to be generated for each entry
     @PrimaryGeneratedColumn()
     id: number;
 
