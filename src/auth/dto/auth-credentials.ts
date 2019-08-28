@@ -1,4 +1,4 @@
-import { IsString, MinLength, MaxLength, Matches } from "class-validator";
+import { IsString, MinLength, MaxLength, Matches } from 'class-validator';
 
 // class validator package and NestJS validation pipe work together here
 
