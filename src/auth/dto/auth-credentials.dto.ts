@@ -1,6 +1,6 @@
 import { IsString, MinLength, MaxLength, Matches } from 'class-validator';
 
-// class validator package and NestJS validation pipe work together here
+// class validator package for decorators and NestJS validation pipe work together here
 
 export class AuthCredentialsDto {
     @IsString()
