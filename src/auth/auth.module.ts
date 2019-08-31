@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 
 // normally you would hide secrets in environment variables
 // ie process.env.SECRET
@@ -13,7 +14,7 @@ import { PassportModule } from '@nestjs/passport';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'weakSecret',
+      secret: 'topSecret51',
       signOptions: {
         expiresIn: 3600,
       },
@@ -21,6 +22,14 @@ import { PassportModule } from '@nestjs/passport';
     TypeOrmModule.forFeature([UserRepository]),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+  ],
+  exports: [ // export strategy so other modules can use it to guard sensitive resources
+    JwtStrategy,
+    PassportModule,
+  ],
 })
+
 export class AuthModule { }

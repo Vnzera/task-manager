@@ -8,14 +8,14 @@ export class AuthController {
         private authService: AuthService,
     ) { }
 
-    // ValidationPope uses DTO to validate data in the body of the request
+    // ValidationPipe uses DTO to validate data in the body of the request
     @Post('/signup')
     signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto) {
         return this.authService.signUp(authCredentialsDto);
     }
 
     @Post('/signin')
-    signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto) {
+    signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
         return this.authService.signIn(authCredentialsDto);
     }
 }
