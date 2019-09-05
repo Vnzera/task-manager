@@ -18,6 +18,7 @@ export class UserRepository extends Repository<User> {
         try {
             await user.save();
         } catch (error) {
+            // 23505 error code will be thrown if the username exist because of the Unique decorator used in the User entity file
             if (error.code === '23505') { // error code for duplicate fields
                 throw new ConflictException('Username already exists');
             } else {
