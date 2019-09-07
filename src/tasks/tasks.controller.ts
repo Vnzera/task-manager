@@ -1,14 +1,16 @@
-import { Controller, Query, Get, Post, Delete, Body, Param, Patch, UsePipes, ValidationPipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Query, Get, Post, Delete, Body, Param, Patch, UsePipes, ValidationPipe, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
+import { AuthGuard } from '@nestjs/passport';
 
 // The controller is responsible for handling requests to our routes. It also uses methods in our task service
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
     constructor(private tasksService: TasksService) { }
 
