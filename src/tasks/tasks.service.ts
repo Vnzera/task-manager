@@ -5,6 +5,7 @@ import { TaskRepository } from './task.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
+import { User } from '../auth/user.entity';
 
 // The service handles business logic
 
@@ -45,7 +46,9 @@ export class TasksService {
         return task;
     }
 
-    createTask(createTaskDto: CreateTaskDto) {
-        return this.taskRepository.createTask(createTaskDto);
+    async createTask(createTaskDto: CreateTaskDto,
+        user: User,
+    ): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto, user);
     }
 }

@@ -6,6 +6,8 @@ import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 // The controller is responsible for handling requests to our routes. It also uses methods in our task service
 
@@ -30,8 +32,10 @@ export class TasksController {
     // NestJS searches the @Body of the request for Dto data ie 'title' 'description'
     @Post()
     @UsePipes(ValidationPipe)
-    createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-        return this.tasksService.createTask(createTaskDto);
+    createTask(@Body() createTaskDto: CreateTaskDto,
+        @GetUser() user: User,
+    ): Promise<Task> {
+        return this.tasksService.createTask(createTaskDto, user);
     }
 
     @Delete('/:id')
