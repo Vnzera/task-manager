@@ -26,8 +26,10 @@ export class TasksController {
     //     // /:id is a url parameter that the front end must provide in the request
     // @Param tells NestJS to look for the 'id' parameter in the request
     @Get('/:id')
-    getTaskById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
-        return this.tasksService.getTaskById(id);
+    getTaskById(@Param('id', ParseIntPipe) id: number,
+        @GetUser() user: User,
+    ): Promise<Task> {
+        return this.tasksService.getTaskById(id, user);
     }
 
     // @Body and createTaskDto work together here
@@ -49,7 +51,8 @@ export class TasksController {
     updateTaskStatus(
         @Param('id', ParseIntPipe) id: number,
         @Body('status', TaskStatusValidationPipe) status: TaskStatus,
+        @GetUser() user: User,
     ): Promise<Task> {
-        return this.tasksService.updateTaskStatus(id, status);
+        return this.tasksService.updateTaskStatus(id, user, status);
     }
 }

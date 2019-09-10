@@ -23,8 +23,9 @@ export class TasksService {
         return this.taskRepository.getTasks(filterDto, user);
     }
 
-    async getTaskById(id: number): Promise<Task> {
-        const found = await this.taskRepository.findOne(id);
+    async getTaskById(id: number, user: User): Promise<Task> {
+        // we provide where clauses to find a task only if it belongs to the user who sent the request AND if the task id provided is also found
+        const found = await this.taskRepository.findOne({ where: { id, userId: user.id } });
 
         if (!found) {
             // this exception will be handled by NestJS behind the scene
@@ -42,8 +43,8 @@ export class TasksService {
         }
     }
 
-    async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
-        const task = await this.getTaskById(id);
+    async updateTaskStatus(id: number, user: User, status: TaskStatus): Promise<Task> {
+        const task = await this.getTaskById(id, user);
         task.status = status;
         await task.save();
         return task;

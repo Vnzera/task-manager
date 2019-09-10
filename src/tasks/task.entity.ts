@@ -19,7 +19,7 @@ export class Task extends BaseEntity {
 
     @Column()
     status: TaskStatus;
-
+    // this relation creates a userId column under the head so we should define it in this Entity
     @ManyToOne(type => User, user => user.tasks, { eager: false })
     user: User;
 
